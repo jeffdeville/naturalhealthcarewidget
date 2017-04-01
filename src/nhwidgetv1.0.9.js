@@ -9,8 +9,10 @@ defer(function(){
         .nh-container { width: 100%; }
         .nh-header { width: 100%; }
         .nh-row {
+            width: 100%;
             margin-bottom: 5px;
             display: table;
+            border-bottom: solid thin #ebeaea;
         }
         .nh-row:after {
             visibility: hidden;
@@ -22,7 +24,7 @@ defer(function(){
         }
         .nh-img-cell {
             padding-right: 10px;
-            max-width: 100px;
+            width: 100px;
             display: table-cell;
         }
         @media (max-width: 480px) {
@@ -36,7 +38,7 @@ defer(function(){
             }
             .nh-content-cell {
                 display: block;
-                width: 100%:;
+                width: 100%;
             }
         }
         .nh-img {
@@ -49,7 +51,7 @@ defer(function(){
         }
         .nh-footer { margin-top: 30px; text-align: center; }
         .nh-powered-by { font-size: x-small; padding-top: 10px;}
-        .nh-logo-img { max-width: 200px; }
+        .nh-logo-img { max-width: 200px; margin-bottom: 15px;}
     </style>
 
     <!-- WIDGET_CONTENT -->
@@ -64,7 +66,7 @@ defer(function(){
             <a class="nh-logo" href="http://www.natural.healthcare" title="Find a Natural Doctor">
                 <div class="nh-catchphrase">Find a Natural Doctor</div>
                 <div class="nh-powered-by">Powered By:</div>
-                <img class="nh-logo-img" src="http://www.natural.healthcare/images/logo-light.png" title="Find a Natural Doctor" />
+                <img class="nh-logo-img" src="http://www.natural.healthcare/images/natural-healthcare-logo.png" title="Find a Natural Doctor" />
             </a>
         </div>
     </div>`
@@ -79,22 +81,30 @@ defer(function(){
                 <a href="" title="" target="_blank">
                     <p class="nh-name"></p>
                 </a>
+                <p class="nh-location"></p>
                 <p class="nh-distance"></p>
+                <a href="" title="" target="_blank">
+                    More Info
+                </a>
             </div>
+
     </div>`
     jQuery("#nh-widget").append(jQuery(outline));
 
-    var baseUrl = 'https://www.natural.healthcare';
+    // var baseUrl = 'https://www.natural.healthcare';
+    var baseUrl = 'http://www.lvh.me:4000';
     jQuery.ajax({
-        url: "https://api.natural.healthcare/v1/listings/search",
+        url: "http://api.lvh.me:4000/v1/listings/search",
+        // url: "https://api.natural.healthcare/v1/listings/search",
         success: function(results) {
             jQuery(results).each(function() {
                 var templateRow = jQuery(template).clone();
-                templateRow.find('img').attr('src', this.featured_image);
+                templateRow.find('img').attr('src', "http://d1sjsgooadp5yf.cloudfront.net/kevin-passero.jpg");
                 templateRow.find('a').attr('href', baseUrl + this.path);
                 templateRow.find('a').attr('title', this.name);
                 templateRow.find('.nh-name').text(this.name);
-                templateRow.find('.nh-distance').text("Within ~30mi");
+                templateRow.find('.nh-distance').text("~30mi");
+                templateRow.find('.nh-location').text(this.city + ", " + this.state);
                 templateRow.appendTo(jQuery('#nh-body'));
             });
         }
